@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil da Empresa - ReMarket Sustentável</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #15803d; border-radius: 10px; }
+    .line-clamp-2 {
+      overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white shadow-sm py-4 sticky top-0 z-20">
+    <div class="container mx-auto flex items-center justify-between px-4 sm:px-6">
+      <a href="index.html" class="flex items-center gap-2 text-gray-600 hover:text-green-700 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+        <span class="font-medium">Voltar ao Marketplace</span>
+      </a>
+      <div class="flex items-center space-x-3">
+        <span class="text-2xl">♻️</span>
+        <h1 class="text-xl sm:text-2xl font-semibold text-green-700">ReMarket</h1>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow container mx-auto px-4 sm:px-6 py-10">
+    <div class="max-w-5xl mx-auto">
+      <!-- Profile Header -->
+      <div id="profile-header" class="bg-white p-6 sm:p-8 rounded-lg shadow-md flex flex-col sm:flex-row items-center gap-6">
+        <!-- Conteúdo do perfil será renderizado aqui -->
+         <p class="text-gray-500 text-center w-full">Carregando perfil...</p>
+      </div>
+
+      <!-- Listagem de produtos -->
+      <div class="mt-10">
+        <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6">Meus Recursos Disponibilizados</h2>
+        <div id="user-product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <p id="products-loading" class="text-gray-500 col-span-full text-center">Carregando seus recursos...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-green-800 text-white text-center py-4 mt-auto">
+    <p class="text-sm">&copy; 2025 ReMarket Sustentável — Um futuro mais verde 🌱</p>
+  </footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+  import { getFirestore, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCexikls640kZgxsknXUQpHZiNEPwRf4xg",
+    authDomain: "encurta-c3642.firebaseapp.com",
+    projectId: "encurta-c3642",
+    storageBucket: "encurta-c3642.appspot.com",
+    messagingSenderId: "365232410104",
+    appId: "1:365232410104:web:d67b449427153593ec5a0d",
+    measurementId: "G-EQ6213FPJH"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const profileHeader = document.getElementById("profile-header");
+  const userProductList = document.getElementById("user-product-list");
+  const productsLoadingMsg = document.getElementById("products-loading");
+
+  function renderProfileHeader(user, productCount = 0) {
+    const nome = user.displayName || "Usuário Anônimo";
+    const email = user.email || "E-mail não informado";
+    const uid = user.uid;
+    const foto = user.photoURL || `https://placehold.co/128x128/a3e635/14532d?text=${nome.charAt(0)}`;
+
+    profileHeader.innerHTML = `
+      <img src="${foto}" alt="Foto de ${nome}" class="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-green-200 shadow-md">
+      <div class="text-center sm:text-left">
+        <h1 class="text-3xl font-bold text-gray-800">${nome}</h1>
+        <p class="text-md text-gray-600 mt-1">${email}</p>
+        <p class="text-sm text-gray-500 mt-2 max-w-xl">
+          Bem-vindo(a) à sua conta no ReMarket. Aqui você pode ver e gerenciar os recursos que sua empresa compartilhou.
+        </p>
+        <div class="mt-4 flex flex-wrap justify-center sm:justify-start gap-4 text-sm">
+          <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">
+            ${productCount} Recursos Partilhados
+          </div>
+          <div class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-mono">
+            UID: <span class="select-all">${uid}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function createImageCarousel(images, altText = "Imagem do recurso") {
+    if (!images.length) {
+      return `<img src="https://placehold.co/600x400/fecaca/b91c1c?text=Imagem+Indisponível" alt="${altText}" class="w-full h-48 object-cover rounded-t-lg"/>`;
+    }
+    return `
+      <div class="w-full h-48 overflow-hidden rounded-t-lg relative">
+        <img src="${images[0]}" alt="${altText}" class="w-full h-full object-cover"/>
+      </div>`;
+  }
+
+  function renderUserProducts(products) {
+    userProductList.innerHTML = '';
+
+    if (products.length === 0) {
+      userProductList.innerHTML = `
+        <p class="text-gray-500 col-span-full text-center">
+          Você ainda não cadastrou nenhum recurso. 
+          <a href="register.html" class="text-green-600 hover:underline">Cadastre o primeiro!</a>
+        </p>`;
+      return;
+    }
+
+    products.forEach((p) => {
+      const imagens = Array.isArray(p.imagens) ? p.imagens.filter(Boolean) : (p.imagem ? [p.imagem] : []);
+      const card = document.createElement("div");
+      card.className = "bg-white rounded-lg shadow hover:shadow-lg transition flex flex-col";
+
+      card.innerHTML = `
+        <div class="relative group">${createImageCarousel(imagens, p.nome)}</div>
+        <div class="p-5 flex flex-col flex-grow">
+          <h4 class="text-xl font-semibold text-gray-800 mb-1 leading-snug">${p.nome || "Sem nome"}</h4>
+          <p class="text-sm text-gray-600 line-clamp-3 mb-4">${p.descricao || "Sem descrição"}</p>
+
+      <div class="flex justify-between items-center text-xs text-gray-600 mb-4 gap-2">
+        <span class="bg-gray-100 px-3 py-1 rounded-full font-medium">${p.categoria || "Sem categoria"}</span>
+        <span class="bg-gray-100 px-3 py-1 rounded-full font-medium">${p.tipo || "Sem tipo"}</span>
+      </div>
+          <div class="bg-gray-50 rounded-lg p-3 text-sm text-gray-700 space-y-1 border border-gray-100 mb-4">
+            <p><span class="font-medium text-gray-800">Quantidade:</span> ${p.quantidade || "1"}</p>
+            <p><span class="font-medium text-gray-800">Endereço:</span> ${p.endereco || "Não informado"}</p>
+              <p><span class="font-medium text-gray-800">Telefone:</span> ${p.telefone || "Não informado"}</p>
+<div class="mt-auto pt-4 border-t border-gray-100 flex gap-2">
+  <a href="edit-resource.html?id=${p.id}" class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm shadow">
+    Editar
+  </a>
+  <button onclick="excluirProduto('${p.id}')" class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm shadow">
+    Excluir
+  </button>
+</div>
+
+        </div>`;
+        
+      userProductList.appendChild(card);
+    });
+  }
+
+  function fetchUserProducts(userId, user) {
+    const productsRef = collection(db, "produtos");
+    const q = query(productsRef, where("usuarioId", "==", userId));
+
+    onSnapshot(q, (snapshot) => {
+      const userProducts = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        userProducts.push({ id: doc.id, ...data });
+      });
+
+      userProducts.sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate());
+
+      renderUserProducts(userProducts);
+      renderProfileHeader(user, userProducts.length);
+    }, (error) => {
+      console.error("Erro ao buscar produtos do usuário: ", error);
+      if(productsLoadingMsg) {
+        productsLoadingMsg.textContent = "Erro ao carregar seus recursos.";
+      }
+    });
+  }
+import { deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+async function excluirProduto(id) {
+  const confirmar = confirm("Tem certeza que deseja excluir este recurso?");
+  if (!confirmar) return;
+
+  try {
+    await deleteDoc(doc(db, "produtos", id));
+    alert("Produto excluído com sucesso!");
+  } catch (err) {
+    console.error("Erro ao excluir produto:", err);
+    alert("Não foi possível excluir o produto.");
+  }
+}
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      renderProfileHeader(user);
+      fetchUserProducts(user.uid, user);
+    } else {
+      if (!window.location.pathname.includes("login.html")) {
+        window.location.href = "./login.html";
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
