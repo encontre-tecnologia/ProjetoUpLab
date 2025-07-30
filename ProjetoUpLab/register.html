@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastrar Recurso - ReMarket</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 flex min-h-screen">
+
+  <aside id="sidebar" class="bg-green-800 text-white w-64 fixed top-0 left-0 h-full shadow-lg z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
+    <div class="flex items-center justify-center space-x-3 p-4 border-b border-green-700 h-20">
+      <span class="text-3xl">♻️</span>
+      <h1 class="text-2xl font-semibold">ReMarket</h1>
+    </div>
+    <nav class="flex flex-col p-4 space-y-2">
+      <a href="index.html" class="flex items-center space-x-3 text-gray-200 hover:text-white hover:bg-green-700 px-3 py-2.5 rounded-md font-medium">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        <span>Home</span>
+      </a>
+      <a href="register.html" class="flex items-center space-x-3 text-white bg-green-700 px-3 py-2.5 rounded-md font-medium">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Cadastrar Recurso</span>
+      </a>
+      <a href="profile.html" class="flex items-center space-x-3 text-gray-200 hover:text-white hover:bg-green-700 px-3 py-2.5 rounded-md transition font-medium">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A10.97 10.97 0 0112 15c2.21 0 4.254.64 5.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span>Profile</span>
+      </a>
+      <a href="conversas.html" class="flex items-center space-x-3 text-gray-200 hover:text-white hover:bg-green-700 px-3 py-2.5 rounded-md transition font-medium">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m-7 4h8a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span>Minhas Conversas</span>
+      </a>
+    </nav>
+  </aside>
+
+  <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-60 z-30 hidden lg:hidden"></div>
+
+  <header class="bg-white shadow-md py-4 lg:hidden fixed top-0 left-0 right-0 z-20">
+    <div class="container mx-auto flex justify-between items-center px-4">
+      <div class="flex items-center space-x-3">
+        <span class="text-2xl">♻️</span>
+        <h1 class="text-xl font-semibold text-green-700">ReMarket</h1>
+      </div>
+      <button id="sidebar-toggle" class="text-gray-600 hover:text-green-600 focus:outline-none" aria-label="Abrir menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="flex-1 flex flex-col lg:ml-64 w-full pt-20 lg:pt-0">
+    <header class="hidden lg:flex items-center bg-white p-4 border-b border-gray-200 h-20 shadow-sm">
+      <h1 class="text-xl font-semibold text-gray-800">Cadastrar Novo Recurso</h1>
+    </header>
+    
+    <main class="flex-grow">
+      <div class="container mx-auto px-4 sm:px-6 py-10">
+        <div class="max-w-2xl mx-auto bg-white p-6 sm:p-8 rounded-lg shadow-md">
+          <h2 class="text-2xl font-bold mb-6 text-gray-800">Detalhes do Recurso</h2>
+
+          <form id="register-form" class="space-y-6">
+            <div>
+              <label for="nome" class="block text-sm font-medium mb-1">Nome do Recurso</label>
+              <input type="text" id="nome" name="nome" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+            </div>
+
+            <div>
+              <label for="descricao" class="block text-sm font-medium mb-1">Descrição</label>
+              <textarea id="descricao" name="descricao" rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-1">URLs das Imagens (até 4)</label>
+              <input type="url" name="imagem1" placeholder="https://exemplo.com/imagem1.jpg" class="w-full mb-2 px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+              <input type="url" name="imagem2" placeholder="URL da Imagem 2 (opcional)" class="w-full mb-2 px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+              <input type="url" name="imagem3" placeholder="URL da Imagem 3 (opcional)" class="w-full mb-2 px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+              <input type="url" name="imagem4" placeholder="URL da Imagem 4 (opcional)" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+            </div>
+
+            <div>
+              <label for="categoria" class="block text-sm font-medium mb-1">Categoria</label>
+              <select id="categoria" name="categoria" required class="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-green-500 focus:border-green-500">
+                <option value="Móveis">Móveis</option>
+                <option value="Eletrônicos">Eletrônicos</option>
+                <option value="Equipamentos">Equipamentos</option>
+                <option value="Veículos">Veículos</option>
+                <option value="Plásticos">Plásticos</option>
+                <option value="Metais">Metais</option>
+                <option value="Têxteis">Têxteis</option>
+                <option value="Outros">Outros</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="tipo" class="block text-sm font-medium mb-1">Tipo de Recurso</label>
+              <div class="flex space-x-4">
+                <label class="flex items-center">
+                  <input type="radio" name="tipo" value="Venda" checked class="mr-2 focus:ring-green-500">
+                  <span>Venda</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="radio" name="tipo" value="Aluguel" class="mr-2 focus:ring-green-500">
+                  <span>Aluguel</span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <label for="valor" class="block text-sm font-medium mb-1">Valor (R$)</label>
+              <input type="number" id="valor" name="valor" required min="0" step="0.01" placeholder="Ex: 25,90" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+            </div>
+            <div>
+              <label for="quantidade" class="block text-sm font-medium mb-1">Quantidade</label>
+              <input type="number" id="quantidade" name="quantidade" required min="1" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+            </div>
+
+            <div>
+              <label for="telefone" class="block text-sm font-medium mb-1">Telefone para Contato</label>
+              <input type="tel" id="telefone" name="telefone" required placeholder="(XX) XXXXX-XXXX" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+            </div>
+
+            <div>
+              <label for="endereco" class="block text-sm font-medium mb-1">Endereço de Retirada</label>
+              <input type="text" id="endereco" name="endereco" required placeholder="Rua, Número, Bairro, Cidade - Estado" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+            </div>
+
+            <div class="flex justify-end items-center pt-4">
+              <p id="success-message" class="text-green-600 font-medium mr-4 hidden">Recurso cadastrado com sucesso!</p>
+              <button type="submit" id="submit-button" class="bg-green-600 text-white px-8 py-3 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 disabled:bg-green-400">Cadastrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-green-800 text-white text-center py-4 mt-auto">
+      <p class="text-sm">&copy; 2025 ReMarket Sustentável — Um futuro mais verde 🌱</p>
+    </footer>
+  </div>
+
+<script>
+  // Script para controle da Sidebar no mobile
+  const sidebar = document.getElementById('sidebar');
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+  const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+  const toggleSidebar = () => {
+    sidebar.classList.toggle('-translate-x-full');
+    sidebar.classList.toggle('translate-x-0');
+    sidebarOverlay.classList.toggle('hidden');
+  };
+
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', toggleSidebar);
+  }
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', toggleSidebar);
+  }
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCexikls640kZgxsknXUQpHZiNEPwRf4xg",
+    authDomain: "encurta-c3642.firebaseapp.com",
+    projectId: "encurta-c3642",
+    storageBucket: "encurta-c3642.firebasestorage.app",
+    messagingSenderId: "365232410104",
+    appId: "1:365232410104:web:d67b449427153593ec5a0d",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth();
+
+  const registerForm = document.getElementById('register-form');
+  const successMessage = document.getElementById('success-message');
+  const submitButton = document.getElementById('submit-button');
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        alert("Você precisa estar logado para cadastrar um recurso. Redirecionando para o login...");
+        window.location.href = "login.html";
+    }
+  });
+
+  registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitButton.disabled = true;
+    submitButton.textContent = 'Enviando...';
+
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Sessão expirada. Faça o login novamente.");
+      window.location.href = "login.html";
+      return;
+    }
+
+    const formData = new FormData(registerForm);
+    const imagens = [
+        formData.get('imagem1'),
+        formData.get('imagem2'),
+        formData.get('imagem3'),
+        formData.get('imagem4')
+    ].filter(url => url && url.trim() !== '');
+
+    const novoRecurso = {
+        nome: formData.get('nome'),
+        descricao: formData.get('descricao'),
+        categoria: formData.get('categoria'),
+        tipo: formData.get('tipo'), // New field for Aluguel or Venda
+        valor: parseFloat(formData.get('valor')) || 0,
+        quantidade: parseInt(formData.get('quantidade')) || 1,
+        telefone: formData.get('telefone'),
+        endereco: formData.get('endereco'),
+        imagens: imagens.length > 0 ? imagens : ['https://via.placeholder.com/400x300.png?text=Sem+Imagem'],
+        createdAt: serverTimestamp(),
+        usuarioId: user.uid,
+        userName: user.displayName || "Anônimo",
+        userPhoto: user.photoURL || `https://ui-avatars.com/api/?name=${(user.displayName || "A")[0]}&background=a3e635&color=14532d`
+    };
+
+    try {
+        await addDoc(collection(db, "produtos"), novoRecurso);
+        successMessage.classList.remove('hidden');
+        registerForm.reset();
+        setTimeout(() => {
+            successMessage.classList.add('hidden');
+            window.location.href = 'index.html';
+        }, 2000);
+    } catch (error) {
+        alert("Erro ao cadastrar recurso: " + error.message);
+        console.error("Erro: ", error);
+        submitButton.disabled = false;
+        submitButton.textContent = 'Cadastrar';
+    }
+  });
+</script>
+
+</body>
+</html>
